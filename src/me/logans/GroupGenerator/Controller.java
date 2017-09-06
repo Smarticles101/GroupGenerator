@@ -1,5 +1,6 @@
 package me.logans.GroupGenerator;
 
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -10,7 +11,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 
 import java.util.ArrayList;
-import java.util.Observable;
 
 public class Controller {
 
@@ -34,14 +34,9 @@ public class Controller {
 
         personCol.setCellFactory(TextFieldTableCell.forTableColumn());
         personCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<Person, String>>() {
-                    @Override
-                    public void handle(TableColumn.CellEditEvent<Person, String> t) {
-                        (t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setName(t.getNewValue());
-                    }
-                }
+                (EventHandler<TableColumn.CellEditEvent<Person, String>>) t -> (t.getTableView().getItems().get(
+                        t.getTablePosition().getRow())
+                ).setName(t.getNewValue())
         );
 
         groupCol.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -107,21 +102,36 @@ public class Controller {
         try {
             int groups = Integer.parseInt(groupNumberInput.getText());
 
-            // remove any empty cells
+            if (groups <= 0) {
+                // invalid number
+                return;
+            }
+
+            ArrayList<Person> people = new ArrayList<Person>(table.getItems());
+
+            for (int i = people.size() - 1; i >= 0; i--) {
+                Person p = people.get(i);
+
+                if (p.getName().equals("")) {
+                    table.getItems().remove(p);
+                    people.remove(p);
+                    continue;
+                }
+
+                p.setGroup("");
+            }
 
             if (groups > table.getItems().size()) {
                 // too many people for that amount of groups.
                 return;
             }
 
-            ArrayList people = new ArrayList(table.getItems());
-
             int groupNum = 1;
 
             while (people.size() != 0) {
                 int personIndex = (int) (Math.random() * people.size());
 
-                Person p = (Person) people.get(personIndex);
+                Person p = people.get(personIndex);
                 p.setGroup(Integer.toString(groupNum));
                 people.remove(p);
 
