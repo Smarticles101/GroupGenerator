@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.FlowPane?>
+
+<FlowPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.logans.GroupGenerator.Controller">
+   <children>
+      <MenuBar fx:id="menuBar" prefHeight="29.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" text="Save" />
+              <MenuItem mnemonicParsing="false" text="Open" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+
+      <TableView fx:id="table" editable="true" onKeyPressed="#keyPressed" onKeyReleased="#keyReleased" onMouseClicked="#mouseClicked" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+            <TableColumn fx:id="personCol" prefWidth="75.0" text="Person">
+                <cellValueFactory>
+                    <PropertyValueFactory property="name" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="groupCol" prefWidth="75.0" text="Group">
+                <cellValueFactory>
+                    <PropertyValueFactory property="group" />
+                </cellValueFactory>
+            </TableColumn>
+        </columns>
+      </TableView>
+      <FlowPane fx:id="buttonPane" orientation="VERTICAL" prefHeight="27.0">
+         <children>
+            <TextField fx:id="groupNumberInput" promptText="Number of Groups" />
+             <Button onMouseClicked="#groupPeople" fx:id="groupSubmit" mnemonicParsing="false" text="Group" />
+         </children>
+      </FlowPane>
+   </children>
+</FlowPane>
