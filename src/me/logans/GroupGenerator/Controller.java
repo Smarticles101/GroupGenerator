@@ -1,6 +1,5 @@
 package me.logans.GroupGenerator;
 
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -20,8 +19,10 @@ public class Controller {
     @FXML TableColumn personCol;
     @FXML TableColumn groupCol;
     @FXML FlowPane buttonPane;
-    @FXML TextField groupNumberInput;
+    @FXML TextField groupAmount;
+    @FXML TextField amountInAGroup;
     @FXML Button groupSubmit;
+    @FXML FlowPane inputPane;
 
     @FXML
     private void initialize() {
@@ -29,7 +30,10 @@ public class Controller {
         table.prefWidthProperty().bind(pane.widthProperty());
         table.prefHeightProperty().bind(pane.heightProperty().subtract(menuBar.prefHeightProperty()).subtract(buttonPane.prefHeightProperty()));
         buttonPane.prefWidthProperty().bind(pane.widthProperty());
-        groupNumberInput.prefWidthProperty().bind(buttonPane.widthProperty().subtract(groupSubmit.widthProperty()));
+        inputPane.prefWidthProperty().bind(pane.widthProperty().subtract(groupSubmit.widthProperty()));
+        groupAmount.prefWidthProperty().bind(inputPane.prefWidthProperty());
+        amountInAGroup.prefWidthProperty().bind(inputPane.prefWidthProperty());
+        groupSubmit.prefHeightProperty().bind(inputPane.prefHeightProperty());
         table.getSelectionModel().setCellSelectionEnabled(true);
 
         personCol.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -99,14 +103,6 @@ public class Controller {
 
     @FXML
     private void groupPeople() {
-        try {
-            int groups = Integer.parseInt(groupNumberInput.getText());
-
-            if (groups <= 0) {
-                // invalid number
-                return;
-            }
-
             ArrayList<Person> people = new ArrayList<Person>(table.getItems());
 
             for (int i = people.size() - 1; i >= 0; i--) {
@@ -121,8 +117,22 @@ public class Controller {
                 p.setGroup("");
             }
 
-            if (groups > table.getItems().size()) {
-                // too many people for that amount of groups.
+
+            if (!groupAmount.getText().equals("")) {
+                groupByAmountOfGroups(people);
+            } else if (!amountInAGroup.getText().equals("")) {
+                groupByGroupSize(people);
+            } else {
+                // didn't put in anything
+            }
+    }
+
+    private void groupByAmountOfGroups(ArrayList<Person> people) {
+        try {
+            int groups = Integer.parseInt(groupAmount.getText());
+
+            if (groups <= 0 || groups > table.getItems().size()) {
+                // not valid amount of groups
                 return;
             }
 
@@ -137,7 +147,20 @@ public class Controller {
 
                 groupNum = groupNum % groups + 1;
             }
+        } catch (NumberFormatException e) {
+            // NaN
+        }
+    }
 
+    private void groupByGroupSize(ArrayList<Person> people) {
+        try {
+            int groupSize = Integer.parseInt(amountInAGroup.getText());
+
+            groupAmount.setText(Integer.toString(people.size() / groupSize));
+
+            groupByAmountOfGroups(people);
+
+            groupAmount.setText("");
         } catch (NumberFormatException e) {
             // NaN
         }

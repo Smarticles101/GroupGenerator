@@ -38,10 +38,15 @@
             </TableColumn>
         </columns>
       </TableView>
-      <FlowPane fx:id="buttonPane" orientation="VERTICAL" prefHeight="27.0">
+      <FlowPane fx:id="buttonPane" orientation="VERTICAL" prefHeight="54.0">
          <children>
-            <TextField fx:id="groupNumberInput" promptText="Number of Groups" />
-             <Button onMouseClicked="#groupPeople" fx:id="groupSubmit" mnemonicParsing="false" text="Group" />
+            <FlowPane fx:id="inputPane" prefHeight="54.0">
+              <children>
+                <TextField fx:id="groupAmount" promptText="Number of Groups" prefHeight="27.0" prefWidth="125" />
+                <TextField fx:id="amountInAGroup" promptText="Size of Group" prefHeight="27.0" prefWidth="125" />
+              </children>
+            </FlowPane>
+            <Button onMouseClicked="#groupPeople" fx:id="groupSubmit" mnemonicParsing="false" text="Group" prefHeight="54" prefWidth="75" />
          </children>
       </FlowPane>
    </children>
