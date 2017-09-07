@@ -10,6 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Controller {
 
@@ -122,8 +123,6 @@ public class Controller {
                 groupByAmountOfGroups(people);
             } else if (!amountInAGroup.getText().equals("")) {
                 groupByGroupSize(people);
-            } else {
-                // didn't put in anything
             }
     }
 
@@ -131,9 +130,19 @@ public class Controller {
         try {
             int groups = Integer.parseInt(groupAmount.getText());
 
-            if (groups <= 0 || groups > table.getItems().size()) {
-                // not valid amount of groups
+            if (groups <= 0 || groups > people.size()) {
+                errorBox("That isn't a valid amount!");
                 return;
+            }
+
+            if (people.size() % groups != 0) {
+                Alert a = new Alert(Alert.AlertType.WARNING, "Groups will be uneven, but as even as possible.", ButtonType.CANCEL, ButtonType.OK);
+
+                a.showAndWait();
+
+                if (a.getResult() == ButtonType.CANCEL) {
+                    return;
+                }
             }
 
             int groupNum = 1;
@@ -148,13 +157,23 @@ public class Controller {
                 groupNum = groupNum % groups + 1;
             }
         } catch (NumberFormatException e) {
-            // NaN
+            errorBox("That isn't a number!");
         }
+    }
+
+    private void errorBox(String message) {
+        Alert a = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
+
+        a.show();
     }
 
     private void groupByGroupSize(ArrayList<Person> people) {
         try {
             int groupSize = Integer.parseInt(amountInAGroup.getText());
+
+            if (groupSize <= 0 || groupSize > people.size()) {
+                errorBox("That isn't a valid amount!");
+            }
 
             groupAmount.setText(Integer.toString(people.size() / groupSize));
 
@@ -162,7 +181,7 @@ public class Controller {
 
             groupAmount.setText("");
         } catch (NumberFormatException e) {
-            // NaN
+            errorBox("That isn't a number!");
         }
     }
 

@@ -16,9 +16,10 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Save" />
+              <!--<MenuItem mnemonicParsing="false" text="Save" />
               <MenuItem mnemonicParsing="false" text="Open" />
-              <MenuItem mnemonicParsing="false" text="Import" />
+              <MenuItem mnemonicParsing="false" text="Import" />-->
+              <MenuItem mnemonicParsing="false" text="Gotta do saving and stuff, It's not here yet" />
             </items>
           </Menu>
         </menus>
